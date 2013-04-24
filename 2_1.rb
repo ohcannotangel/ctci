@@ -52,3 +52,13 @@ p array1
 puts "ver3"
 p uniq_with_hash(array1)
 
+# ++++++ result +++++
+# original:
+# [1, 4, 3, 3, 2, 1, 2, 4, 2, 2, 3, 4]
+# ver1
+# [1, 4, 3, 2]
+# ver2
+# [1, 4, 3, 2]
+# ver3
+# [1, 4, 3, 2]
+
