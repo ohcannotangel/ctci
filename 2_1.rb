@@ -19,6 +19,8 @@ def uniq!(array)
     array[i+1..-1].each_with_index do |e2, j|
       if e == e2
         array.delete_at(i+1 + j)
+        i -= 1
+        j -= 1
       end
     end
   end
