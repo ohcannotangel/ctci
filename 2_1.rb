@@ -12,17 +12,6 @@ def uniq(array)
   return ret
 end
 
-# ver2
-# バッファを使わない
-def uniq!(array)
-  array.each_with_index do |e, i|
-    array[i+1..-1].each_with_index do |e2, j|
-      if e == e2
-        array.delete_at(i+1 + j)
-      end
-    end
-  end
-end
 
 # ver3
 # hash.keysを使う
@@ -43,10 +32,16 @@ p array1
 puts "ver1"
 p uniq(array1)
 
-puts "ver2"
-uniq!(array1)
-p array1
-
 puts "ver3"
 p uniq_with_hash(array1)
+
+# ++++++ result +++++
+# original:
+# [1, 4, 3, 3, 2, 1, 2, 4, 2, 2, 3, 4]
+# ver1
+# [1, 4, 3, 2]
+# ver2
+# [1, 4, 3, 2]
+# ver3
+# [1, 4, 3, 2]
 
