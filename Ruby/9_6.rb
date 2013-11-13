@@ -6,57 +6,52 @@ $right = ')'
 
 def main(num)
   puts "num: #{num}"
-  # 最初は左括弧しか入らないので初期値設定してから実行
-  generate_parens(1, [$left], num-1, num*2-1)
+  str = Array.new(num*2)
+  generate_parens(str, num, num, 0)
 end
 
 # 対応する括弧を生成する
-# open_pair     : ペアになっていない括弧の数
-# result_array : 結果配列
-# rest         : 残りの括弧の数
-# rest_left    : 残りの左括弧の数
-def generate_parens(open_pair, result_array, rest_left, rest)
+def generate_parens(str, rest_left, rest_right, count)
 
-  if rest == 1
-    # 右括弧を置いて終了
-    result_array.push($right)
-    print result_array.join("")
-    check_pair(result_array)
+  # invalid
+  if rest_left < 0 || rest_right < rest_left
+    puts "error"
     return
-    
-  else
-    left_p = (rest_left == 0) ? false : true
-    right_p = (open_pair == 0) ? false : true
+  end
 
-    if left_p
-      tmp = result_array.clone
-      tmp.push($left)
-      generate_parens(open_pair+1, tmp, rest_left-1, rest-1)
+  if rest_left == 0 && rest_right == 0
+    # for test
+    msg = check_pair(str) ? "OK" : "NG"
+    print str.join('') + " : #{msg}\n"
+    # puts str.join('')
+    return
+
+  else
+    if rest_left != 0           # 左括弧
+      str[count] = $left
+      generate_parens(str, rest_left-1, rest_right, count+1)
     end
 
-    if right_p
-      tmp = result_array.clone
-      tmp.push($right)
-      generate_parens(open_pair-1, tmp, rest_left, rest-1)
+    if rest_right > rest_left   # 右括弧
+      str[count] = $right
+      generate_parens(str, rest_left, rest_right-1, count+1)
     end
 
   end
 end
 
-
 def check_pair(array)
-  
-  print array.join('')
 
-  ng_flg = false
+  flg = true
+
   # 偶数かどうか
   if array.length.odd?
-    ng_flg = true
+    flg = false
   else
     left = right = 0;
     # 先頭と後ろのチェック
     if (array[0] != $left) or (array[-1] != $right)
-      ng_flg = true
+      flg = false
     else
       open_pair = 0
       array.each do |elem|
@@ -67,81 +62,55 @@ def check_pair(array)
           right += 1
           open_pair -= 1
           if open_pair < 0
-            ng_flg = true
+            flg = true
             break
           end
         else
-          ng_flg = true         # $left $right以外の文字列
+          flg = true # $left $right以外の文字列
           break
         end
       end
-      
-      if !ng_flg && (left != right)
-        ng_flg = true
+
+      if left != right
+        flg = true
       end
 
     end
   end
-  
-  if ng_flg
-    print " : NG\n"
-  else
-    print " : OK\n"
-  end
+
+  return flg
 
 end
-  
-# test code
-def test
-  puts "test:"
-  check_pair([')', ')'])
-  check_pair(['(', '('])
-  check_pair(['(', ')', ')', ')'])
-  check_pair(['(', '(', '(', ')'])
-  check_pair(['(', ')', '(', ')'])
-end
 
-# 実行
-test()
-print "\n"
 main(2)
-print "\n"
 main(3)
-print "\n"
 main(4)
 
+########################
 # 実行結果
-# test:
-# )) : NG
-# (( : NG
-# ())) : NG
-# ((() : NG
-# ()() : OK
-
+########################
+# $ ./9_6.rb                                                                                                                                                                                                           [11:13]
 # num: 2
-# (())(()) : OK
-# ()()()() : OK
-
+# (()) : OK
+# ()() : OK
 # num: 3
-# ((()))((())) : OK
-# (()())(()()) : OK
-# (())()(())() : OK
-# ()(())()(()) : OK
-# ()()()()()() : OK
-
+# ((())) : OK
+# (()()) : OK
+# (())() : OK
+# ()(()) : OK
+# ()()() : OK
 # num: 4
-# (((())))(((()))) : OK
-# ((()()))((()())) : OK
-# ((())())((())()) : OK
-# ((()))()((()))() : OK
-# (()(()))(()(())) : OK
-# (()()())(()()()) : OK
-# (()())()(()())() : OK
-# (())(())(())(()) : OK
-# (())()()(())()() : OK
-# ()((()))()((())) : OK
-# ()(()())()(()()) : OK
-# ()(())()()(())() : OK
-# ()()(())()()(()) : OK
-# ()()()()()()()() : OK
-
+# (((()))) : OK
+# ((()())) : OK
+# ((())()) : OK
+# ((()))() : OK
+# (()(())) : OK
+# (()()()) : OK
+# (()())() : OK
+# (())(()) : OK
+# (())()() : OK
+# ()((())) : OK
+# ()(()()) : OK
+# ()(())() : OK
+# ()()(()) : OK
+# ()()()() : OK
