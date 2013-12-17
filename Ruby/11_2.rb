@@ -39,3 +39,11 @@ end
 
 main()
 
+# 実行結果
+# *apple
+# *aplpe
+# *aplep
+# aplle
+# *mncaoo
+# *monaco
+# monac
